@@ -1,0 +1,267 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/delete": {
+            "delete": {
+                "description": "delete",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HTTP Methods"
+                ],
+                "summary": "The request's query parameters.",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/get": {
+            "get": {
+                "description": "get",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HTTP Methods"
+                ],
+                "summary": "The request's query parameters.",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/patch": {
+            "patch": {
+                "description": "get",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HTTP Methods"
+                ],
+                "summary": "The request's query parameters.",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/post": {
+            "post": {
+                "description": "post",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HTTP Methods"
+                ],
+                "summary": "The request's query parameters.",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/put": {
+            "put": {
+                "description": "get",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HTTP Methods"
+                ],
+                "summary": "The request's query parameters.",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/status/{code}": {
+            "get": {
+                "description": "get",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Status codes"
+                ],
+                "summary": "The request's query parameters.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "return status code",
+                        "name": "code",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "100": {
+                        "description": "Informational responses",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "300": {
+                        "description": "Redirection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Client Errors",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Errors",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "get",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Status codes"
+                ],
+                "summary": "The request's query parameters.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "return status code",
+                        "name": "code",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "description": "post",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Status codes"
+                ],
+                "summary": "The request's query parameters.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "return status code",
+                        "name": "code",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Status codes"
+                ],
+                "summary": "The request's query parameters.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "return status code",
+                        "name": "code",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "description": "get",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Status codes"
+                ],
+                "summary": "The request's query parameters.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "return status code",
+                        "name": "code",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    }
+}

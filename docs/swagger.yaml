@@ -1,0 +1,173 @@
+info:
+  contact: {}
+paths:
+  /delete:
+    delete:
+      consumes:
+      - application/json
+      description: delete
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - HTTP Methods
+  /get:
+    get:
+      consumes:
+      - application/json
+      description: get
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - HTTP Methods
+  /patch:
+    patch:
+      consumes:
+      - application/json
+      description: get
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - HTTP Methods
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: post
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - HTTP Methods
+  /put:
+    put:
+      consumes:
+      - application/json
+      description: get
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - HTTP Methods
+  /status/{code}:
+    delete:
+      consumes:
+      - application/json
+      description: delete
+      parameters:
+      - description: return status code
+        in: path
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - Status codes
+    get:
+      consumes:
+      - application/json
+      description: get
+      parameters:
+      - description: return status code
+        in: path
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "100":
+          description: Informational responses
+          schema:
+            type: string
+        "200":
+          description: Success
+          schema:
+            type: string
+        "300":
+          description: Redirection
+          schema:
+            type: string
+        "400":
+          description: Client Errors
+          schema:
+            type: string
+        "500":
+          description: Server Errors
+          schema:
+            type: string
+      summary: The request's query parameters.
+      tags:
+      - Status codes
+    patch:
+      consumes:
+      - application/json
+      description: get
+      parameters:
+      - description: return status code
+        in: path
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - Status codes
+    post:
+      consumes:
+      - application/json
+      description: post
+      parameters:
+      - description: return status code
+        in: path
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - Status codes
+    put:
+      consumes:
+      - application/json
+      description: get
+      parameters:
+      - description: return status code
+        in: path
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: The request's query parameters.
+      tags:
+      - Status codes
+swagger: "2.0"
