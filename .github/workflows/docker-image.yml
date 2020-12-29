@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  create:
+    tags:
+      - v*
+
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USER }}/httpod
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Log into registry
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USER }} --password-stdin      
+    - name: Build the Docker image
+      run: | 
+        docker build . --file Dockerfile --tag $DOCKER_IMAGE_NAME:${GITHUB_REF:10}
+        docker push $DOCKER_IMAGE_NAME:${GITHUB_REF:10}
