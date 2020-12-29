@@ -7,5 +7,4 @@ require (
 	github.com/labstack/echo/v4 v4.1.17
 	github.com/swaggo/echo-swagger v1.1.0
 	github.com/swaggo/swag v1.7.0
-	golang.org/x/tools v0.0.0-20201207182000-5679438983bd
 )
