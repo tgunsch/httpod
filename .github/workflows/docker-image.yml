@@ -23,7 +23,7 @@ jobs:
         docker build . --file Dockerfile --tag $GH_IMAGE_NAME:${GITHUB_REF:10}
         docker tag $GH_IMAGE_NAME:${GITHUB_REF:10} $GH_IMAGE_NAME:latest
     - name: Log into gh registry
-      run: echo "${{ secrets.GH_TOKEN }}" | docker login -u tgunsch --password-stdin
+      run: echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u tgunsch --password-stdin
     - name: Push image to gh registry
       run: |
         docker push $GH_IMAGE_NAME:${GITHUB_REF:10}
