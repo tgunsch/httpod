@@ -3,39 +3,61 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/swaggo/echo-swagger"
+	"github.com/tgunsch/httpod/internal/cookies"
 	"github.com/tgunsch/httpod/internal/docs"
-	"github.com/tgunsch/httpod/internal/handler"
+	"github.com/tgunsch/httpod/internal/http"
+	"github.com/tgunsch/httpod/internal/status"
 	"github.com/tgunsch/httpod/internal/util"
 	"os"
 	"strings"
 )
 
+// @title httPod
+// @version 0.0.1
+// @description A simple HTTP Request & HTTPResponse Service, shamelessly stolen from httpbin.org.
+// @tag.name HTTP Methods
+// @tag.description Testing different HTTP methods
+// @tag.name Status codes
+// @tag.description Generates responses with given status code
+// @tag.name Cookies
+// @tag.description Creates, reads and deletes Cookies
+
 func main() {
 	const (
-		SWAGGER_PATH = "/swagger"
-		API_PATH     = "/api"
+		SWAGGER_PATH  = "/swagger"
+		API_PATH      = "/api"
+		BASE_PATH_ENV = "BASE_PATH"
 	)
 	server := echo.New()
-	basePath := os.Getenv("BASE_PATH")
+	basePath := os.Getenv(BASE_PATH_ENV)
 	if basePath != "" {
 		basePath = "/" + basePath
 	}
 	endpoints := server.Group(basePath)
 
-	endpoints.GET(SWAGGER_PATH+"/*", echoSwagger.WrapHandler, swaggerMiddleware(basePath+API_PATH))
+	// swagger ui will be available on /basePath/swagger/index.html
+	// api will be available on /basePath/api
+	// swagger info will use X-Forwarded headers if available;
+	// e.g.: X-Forwarded-Host=my.domain.com X-Forwarded-Prefix=myPrefix swagger ui show api on url http://my.domain.com/myPrefix/basePath/api
+	apiPath := basePath + API_PATH
+	endpoints.GET(SWAGGER_PATH+"/*", echoSwagger.WrapHandler, swaggerMiddleware(apiPath))
 
 	api := endpoints.Group(API_PATH)
-	api.DELETE("/delete", handler.HttpDeleteHandler)
-	api.GET("/get", handler.HttpGetHandler)
-	api.PATCH("/patch", handler.HttpPatchHandler)
-	api.POST("/post", handler.HttpPostHandler)
-	api.PUT("/put", handler.HttpPutHandler)
+	api.GET("/get", http.GetHandler)
+	api.DELETE("/delete", http.DeleteHandler)
+	api.PATCH("/patch", http.PatchHandler)
+	api.POST("/post", http.PostHandler)
+	api.PUT("/put", http.PutHandler)
 
-	api.DELETE("/status/:code", handler.StatusDeleteHandler)
-	api.GET("/status/:code", handler.StatusGetHandler)
-	api.PATCH("/status/:code", handler.StatusPatchHandler)
-	api.POST("/status/:code", handler.StatusPostHandler)
-	api.PUT("/status/:code", handler.StatusPutHandler)
+	api.DELETE("/status/:code", status.DeleteHandler)
+	api.GET("/status/:code", status.GetHandler)
+	api.PATCH("/status/:code", status.PatchHandler)
+	api.POST("/status/:code", status.PostHandler)
+	api.PUT("/status/:code", status.PutHandler)
+
+	api.GET("/cookies", cookies.GetHandler)
+	api.POST("/cookies/:cookieName", cookies.PostHandler)
+	api.DELETE("/cookies/:cookieName", cookies.DeleteHandler)
 
 	server.Logger.Fatal(server.Start(":8080"))
 }
@@ -45,15 +67,11 @@ func swaggerMiddleware(path string) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			if strings.HasSuffix(c.Request().URL.Path, "index.html") {
 
-				docs.SwaggerInfo.Title = "httPod"
-				docs.SwaggerInfo.Description = "A simple HTTP Request & Response Service, shamelessly stolen from httpbin."
-				docs.SwaggerInfo.Version = "0.0.1"
-
 				scheme, host := util.GetSchemeHost(c.Request())
 				docs.SwaggerInfo.Host = host
 				docs.SwaggerInfo.Schemes = []string{scheme}
 
-				docs.SwaggerInfo.BasePath = util.GetPrefix(path, c.Request())
+				docs.SwaggerInfo.BasePath = util.GetPath(path, c.Request())
 			}
 			return next(c)
 		}

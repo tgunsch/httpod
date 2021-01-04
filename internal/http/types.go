@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"encoding/json"
@@ -15,7 +15,7 @@ type Response struct {
 	Url     string            `json:"url"`
 }
 
-func FromContext(c echo.Context) string {
+func ResponseFromContext(c echo.Context) string {
 	response := Response{
 		Headers: getHeaders(c),
 		Args:    getParams(c),

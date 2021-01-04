@@ -24,9 +24,103 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/cookies": {
+            "get": {
+                "description": "Requests using GET should only retrieve data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cookies"
+                ],
+                "summary": "Get all cookies of the request.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/cookies.GetCookies"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cookies/{cookieName}": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cookies"
+                ],
+                "summary": "Create a new cookie.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The name of the new cookie",
+                        "name": "cookieName",
+                        "in": "path"
+                    },
+                    {
+                        "description": "The cookie",
+                        "name": "cookie",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cookies.SetCookie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/cookies.GetCookies"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a specific cookie.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cookies"
+                ],
+                "summary": "Delete a cookie.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The name of the cookie to delete",
+                        "name": "cookieName",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/cookies.GetCookies"
+                        }
+                    }
+                }
+            }
+        },
         "/delete": {
             "delete": {
-                "description": "delete",
+                "description": "The DELETE method deletes the specified resource.",
                 "consumes": [
                     "application/json"
                 ],
@@ -36,17 +130,20 @@ var doc = `{
                 "tags": [
                     "HTTP Methods"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a DELETE request.",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
                     }
                 }
             }
         },
         "/get": {
             "get": {
-                "description": "get",
+                "description": "Requests using GET should only retrieve data.",
                 "consumes": [
                     "application/json"
                 ],
@@ -56,17 +153,20 @@ var doc = `{
                 "tags": [
                     "HTTP Methods"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a GET request.",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
                     }
                 }
             }
         },
         "/patch": {
             "patch": {
-                "description": "get",
+                "description": "The PATCH method is used to apply partial modifications to a resource.",
                 "consumes": [
                     "application/json"
                 ],
@@ -76,17 +176,20 @@ var doc = `{
                 "tags": [
                     "HTTP Methods"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a PATCH request.",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
                     }
                 }
             }
         },
         "/post": {
             "post": {
-                "description": "post",
+                "description": "The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.",
                 "consumes": [
                     "application/json"
                 ],
@@ -96,17 +199,20 @@ var doc = `{
                 "tags": [
                     "HTTP Methods"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a POST request.",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
                     }
                 }
             }
         },
         "/put": {
             "put": {
-                "description": "get",
+                "description": "The PUT method replaces all current representations of the target resource with the request payload.",
                 "consumes": [
                     "application/json"
                 ],
@@ -116,17 +222,20 @@ var doc = `{
                 "tags": [
                     "HTTP Methods"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do PUT request.",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
                     }
                 }
             }
         },
         "/status/{code}": {
             "get": {
-                "description": "get",
+                "description": "Requests using GET should only retrieve data.",
                 "consumes": [
                     "application/json"
                 ],
@@ -136,7 +245,7 @@ var doc = `{
                 "tags": [
                     "Status codes"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a GET request.",
                 "parameters": [
                     {
                         "type": "string",
@@ -170,6 +279,12 @@ var doc = `{
                             "type": "string"
                         }
                     },
+                    "418": {
+                        "description": "I'm a teapot",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "Server Errors",
                         "schema": {
@@ -179,7 +294,7 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "get",
+                "description": "The PUT method replaces all current representations of the target resource with the request payload.",
                 "consumes": [
                     "application/json"
                 ],
@@ -189,7 +304,7 @@ var doc = `{
                 "tags": [
                     "Status codes"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do PUT request.",
                 "parameters": [
                     {
                         "type": "string",
@@ -199,13 +314,46 @@ var doc = `{
                     }
                 ],
                 "responses": {
+                    "100": {
+                        "description": "Informational responses",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "200": {
-                        "description": ""
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "300": {
+                        "description": "Redirection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Client Errors",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Errors",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
             "post": {
-                "description": "post",
+                "description": "The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.",
                 "consumes": [
                     "application/json"
                 ],
@@ -215,7 +363,7 @@ var doc = `{
                 "tags": [
                     "Status codes"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a POST request.",
                 "parameters": [
                     {
                         "type": "string",
@@ -225,13 +373,46 @@ var doc = `{
                     }
                 ],
                 "responses": {
+                    "100": {
+                        "description": "Informational responses",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "200": {
-                        "description": ""
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "300": {
+                        "description": "Redirection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Client Errors",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Errors",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
             "delete": {
-                "description": "delete",
+                "description": "The DELETE method deletes the specified resource.",
                 "consumes": [
                     "application/json"
                 ],
@@ -241,7 +422,7 @@ var doc = `{
                 "tags": [
                     "Status codes"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a DELETE request.",
                 "parameters": [
                     {
                         "type": "string",
@@ -251,13 +432,46 @@ var doc = `{
                     }
                 ],
                 "responses": {
+                    "100": {
+                        "description": "Informational responses",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "200": {
-                        "description": ""
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "300": {
+                        "description": "Redirection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Client Errors",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Errors",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
             "patch": {
-                "description": "get",
+                "description": "The PATCH method is used to apply partial modifications to a resource.",
                 "consumes": [
                     "application/json"
                 ],
@@ -267,7 +481,7 @@ var doc = `{
                 "tags": [
                     "Status codes"
                 ],
-                "summary": "The request's query parameters.",
+                "summary": "Do a PATCH request.",
                 "parameters": [
                     {
                         "type": "string",
@@ -277,13 +491,153 @@ var doc = `{
                     }
                 ],
                 "responses": {
+                    "100": {
+                        "description": "Informational responses",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "200": {
-                        "description": ""
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "300": {
+                        "description": "Redirection",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Client Errors",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Errors",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
         }
-    }
+    },
+    "definitions": {
+        "cookies.GetCookies": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string"
+                },
+                "expires": {
+                    "type": "string"
+                },
+                "httpOnly": {
+                    "type": "boolean"
+                },
+                "maxAge": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "rawExpires": {
+                    "type": "string"
+                },
+                "sameSite": {
+                    "type": "string"
+                },
+                "secure": {
+                    "type": "boolean"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "cookies.SetCookie": {
+            "type": "object",
+            "properties": {
+                "expiresSeconds": {
+                    "type": "integer",
+                    "example": 3600
+                },
+                "httpOnly": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "maxAge": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/"
+                },
+                "sameSite": {
+                    "type": "string",
+                    "example": "Strict"
+                },
+                "secure": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "value": {
+                    "type": "string",
+                    "example": "Test"
+                }
+            }
+        },
+        "http.Response": {
+            "type": "object",
+            "properties": {
+                "args": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "origin": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "description": "Testing different HTTP methods",
+            "name": "HTTP Methods"
+        },
+        {
+            "description": "Generates responses with given status code",
+            "name": "Status codes"
+        },
+        {
+            "description": "Creates, reads and deletes Cookies",
+            "name": "Cookies"
+        }
+    ]
 }`
 
 type swaggerInfo struct {
@@ -297,12 +651,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "",
+	Version:     "0.0.1",
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "",
-	Description: "",
+	Title:       "httPod",
+	Description: "A simple HTTP Request & HTTPResponse Service, shamelessly stolen from httpbin.org.",
 }
 
 type s struct{}

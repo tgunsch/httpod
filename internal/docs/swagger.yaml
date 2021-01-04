@@ -1,93 +1,216 @@
+definitions:
+  cookies.GetCookies:
+    properties:
+      domain:
+        type: string
+      expires:
+        type: string
+      httpOnly:
+        type: boolean
+      maxAge:
+        type: integer
+      name:
+        type: string
+      path:
+        type: string
+      rawExpires:
+        type: string
+      sameSite:
+        type: string
+      secure:
+        type: boolean
+      value:
+        type: string
+    type: object
+  cookies.SetCookie:
+    properties:
+      expiresSeconds:
+        example: 3600
+        type: integer
+      httpOnly:
+        example: true
+        type: boolean
+      maxAge:
+        example: 0
+        type: integer
+      path:
+        example: /
+        type: string
+      sameSite:
+        example: Strict
+        type: string
+      secure:
+        example: true
+        type: boolean
+      value:
+        example: Test
+        type: string
+    type: object
+  http.Response:
+    properties:
+      args:
+        additionalProperties:
+          type: string
+        type: object
+      headers:
+        additionalProperties:
+          type: string
+        type: object
+      origin:
+        type: string
+      url:
+        type: string
+    type: object
 info:
   contact: {}
+  description: A simple HTTP Request & HTTPResponse Service, shamelessly stolen from
+    httpbin.org.
+  title: httPod
+  version: 0.0.1
 paths:
-  /delete:
-    delete:
+  /cookies:
+    get:
       consumes:
       - application/json
-      description: delete
+      description: Requests using GET should only retrieve data.
       produces:
       - application/json
       responses:
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/cookies.GetCookies'
+            type: array
+      summary: Get all cookies of the request.
+      tags:
+      - Cookies
+  /cookies/{cookieName}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific cookie.
+      parameters:
+      - description: The name of the cookie to delete
+        in: path
+        name: cookieName
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/cookies.GetCookies'
+      summary: Delete a cookie.
+      tags:
+      - Cookies
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: The name of the new cookie
+        in: path
+        name: cookieName
+        type: string
+      - description: The cookie
+        in: body
+        name: cookie
+        required: true
+        schema:
+          $ref: '#/definitions/cookies.SetCookie'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/cookies.GetCookies'
+      summary: Create a new cookie.
+      tags:
+      - Cookies
+  /delete:
+    delete:
+      consumes:
+      - application/json
+      description: The DELETE method deletes the specified resource.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Do a DELETE request.
       tags:
       - HTTP Methods
   /get:
     get:
       consumes:
       - application/json
-      description: get
+      description: Requests using GET should only retrieve data.
       produces:
       - application/json
       responses:
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Do a GET request.
       tags:
       - HTTP Methods
   /patch:
     patch:
       consumes:
       - application/json
-      description: get
+      description: The PATCH method is used to apply partial modifications to a resource.
       produces:
       - application/json
       responses:
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Do a PATCH request.
       tags:
       - HTTP Methods
   /post:
     post:
       consumes:
       - application/json
-      description: post
+      description: The POST method is used to submit an entity to the specified resource,
+        often causing a change in state or side effects on the server.
       produces:
       - application/json
       responses:
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Do a POST request.
       tags:
       - HTTP Methods
   /put:
     put:
       consumes:
       - application/json
-      description: get
+      description: The PUT method replaces all current representations of the target
+        resource with the request payload.
       produces:
       - application/json
       responses:
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Do PUT request.
       tags:
       - HTTP Methods
   /status/{code}:
     delete:
       consumes:
       - application/json
-      description: delete
-      parameters:
-      - description: return status code
-        in: path
-        name: code
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ""
-      summary: The request's query parameters.
-      tags:
-      - Status codes
-    get:
-      consumes:
-      - application/json
-      description: get
+      description: The DELETE method deletes the specified resource.
       parameters:
       - description: return status code
         in: path
@@ -112,17 +235,60 @@ paths:
           description: Client Errors
           schema:
             type: string
+        "418":
+          description: I'm a teapot
+          schema:
+            type: string
         "500":
           description: Server Errors
           schema:
             type: string
-      summary: The request's query parameters.
+      summary: Do a DELETE request.
+      tags:
+      - Status codes
+    get:
+      consumes:
+      - application/json
+      description: Requests using GET should only retrieve data.
+      parameters:
+      - description: return status code
+        in: path
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "100":
+          description: Informational responses
+          schema:
+            type: string
+        "200":
+          description: Success
+          schema:
+            type: string
+        "300":
+          description: Redirection
+          schema:
+            type: string
+        "400":
+          description: Client Errors
+          schema:
+            type: string
+        "418":
+          description: I'm a teapot
+          schema:
+            type: string
+        "500":
+          description: Server Errors
+          schema:
+            type: string
+      summary: Do a GET request.
       tags:
       - Status codes
     patch:
       consumes:
       - application/json
-      description: get
+      description: The PATCH method is used to apply partial modifications to a resource.
       parameters:
       - description: return status code
         in: path
@@ -131,15 +297,38 @@ paths:
       produces:
       - application/json
       responses:
+        "100":
+          description: Informational responses
+          schema:
+            type: string
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: Success
+          schema:
+            type: string
+        "300":
+          description: Redirection
+          schema:
+            type: string
+        "400":
+          description: Client Errors
+          schema:
+            type: string
+        "418":
+          description: I'm a teapot
+          schema:
+            type: string
+        "500":
+          description: Server Errors
+          schema:
+            type: string
+      summary: Do a PATCH request.
       tags:
       - Status codes
     post:
       consumes:
       - application/json
-      description: post
+      description: The POST method is used to submit an entity to the specified resource,
+        often causing a change in state or side effects on the server.
       parameters:
       - description: return status code
         in: path
@@ -148,15 +337,38 @@ paths:
       produces:
       - application/json
       responses:
+        "100":
+          description: Informational responses
+          schema:
+            type: string
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: Success
+          schema:
+            type: string
+        "300":
+          description: Redirection
+          schema:
+            type: string
+        "400":
+          description: Client Errors
+          schema:
+            type: string
+        "418":
+          description: I'm a teapot
+          schema:
+            type: string
+        "500":
+          description: Server Errors
+          schema:
+            type: string
+      summary: Do a POST request.
       tags:
       - Status codes
     put:
       consumes:
       - application/json
-      description: get
+      description: The PUT method replaces all current representations of the target
+        resource with the request payload.
       parameters:
       - description: return status code
         in: path
@@ -165,9 +377,38 @@ paths:
       produces:
       - application/json
       responses:
+        "100":
+          description: Informational responses
+          schema:
+            type: string
         "200":
-          description: ""
-      summary: The request's query parameters.
+          description: Success
+          schema:
+            type: string
+        "300":
+          description: Redirection
+          schema:
+            type: string
+        "400":
+          description: Client Errors
+          schema:
+            type: string
+        "418":
+          description: I'm a teapot
+          schema:
+            type: string
+        "500":
+          description: Server Errors
+          schema:
+            type: string
+      summary: Do PUT request.
       tags:
       - Status codes
 swagger: "2.0"
+tags:
+- description: Testing different HTTP methods
+  name: HTTP Methods
+- description: Generates responses with given status code
+  name: Status codes
+- description: Creates, reads and deletes Cookies
+  name: Cookies

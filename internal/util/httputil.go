@@ -3,17 +3,19 @@ package util
 import (
 	"net"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
 func GetSchemeHost(request *http.Request) (string, string) {
 
-	host := getHost(request)
+	host := GetHost(request)
 	scheme := getScheme(request, host)
 	return scheme, host
 }
 
-func GetPrefix(path string, request *http.Request) string {
+// Calculate the path. If a header X-Forwarded-Prefix is found, the result is prefixed
+func GetPath(path string, request *http.Request) string {
 	forwardedPrefix := getForwardedHeader(request, "Prefix")
 	if forwardedPrefix != "" {
 		path = join(forwardedPrefix, path)
@@ -52,7 +54,11 @@ func getScheme(request *http.Request, host string) string {
 	return scheme
 }
 
-func getHost(request *http.Request) string {
+// Get the host from the request values with the following priority:
+// 1. Header X-Forwarded-Host
+// 2. host from request
+// 3. host from request.URL
+func GetHost(request *http.Request) string {
 	host := ""
 	forwardedHost := getForwardedHeader(request, "Host")
 	switch {
@@ -71,4 +77,16 @@ func getForwardedHeader(req *http.Request, prefix string) string {
 	headerList := req.Header.Get("X-Forwarded-" + prefix)
 	headerValue := strings.SplitN(headerList, ",", 2)[0]
 	return strings.TrimSpace(headerValue)
+}
+
+func GetUrl(path string, request *http.Request) string {
+	scheme, host := GetSchemeHost(request)
+	fullPath := GetPath(path, request)
+	url := url.URL{
+		Scheme: scheme,
+		Host:   host,
+		Path:   fullPath,
+	}
+	return url.String()
+
 }
