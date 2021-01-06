@@ -62,6 +62,12 @@ func DeleteHandler(context echo.Context) error {
 // @Router /cookies/{cookieName} [post]
 func PostHandler(context echo.Context) error {
 
+	name := context.Param("cookieName")
+	c, _ := context.Cookie(name)
+	if c != nil {
+		return context.String(http.StatusBadRequest, fmt.Sprintf("Cookie %s already exists", name))
+	}
+
 	cookie, err := toHttpCookie(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, fmt.Sprintf("Oops: %v", err))
