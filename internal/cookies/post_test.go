@@ -12,11 +12,11 @@ import (
 	"github.com/tgunsch/httpod/internal/cookies"
 )
 
-var _ = Describe("Cookies", func() {
-	Context("PostHandler", func() {
-		It("creates cookie with default values", func() {
+var _ = Describe("PostHandler", func() {
+	Context("when cookie do not exists", func() {
+		It("creates a new cookie with default values", func() {
 
-			ctx, _, responseRecorder := mockContext(`{"value":"testValue"}`)
+			ctx, _, responseRecorder := mockPostContext(`{"value":"testValue"}`)
 
 			err := cookies.PostHandler(ctx)
 			Expect(err).Should(BeNil())
@@ -31,9 +31,9 @@ var _ = Describe("Cookies", func() {
 			// response body contains json cookie
 			Expect(responseRecorder.Body.String()).To(MatchJSON(`{ "name": "testCookie", "value": "testValue", "domain": "myapp.com" }`))
 		})
-		It("creates cookie with specific values", func() {
+		It("creates a new cookie with specific values", func() {
 
-			ctx, _, responseRecorder := mockContext(`{
+			ctx, _, responseRecorder := mockPostContext(`{
 				"value":"testValue",
 				"path": "/blubb",
 				"expiresSeconds":3600,
@@ -67,9 +67,9 @@ var _ = Describe("Cookies", func() {
           		"sameSite": "Strict"
 			}`))
 		})
-		It("creates cookie max age higher priority than expires", func() {
+		It("creates cookie with max age instead expires", func() {
 
-			ctx, _, responseRecorder := mockContext(`{
+			ctx, _, responseRecorder := mockPostContext(`{
 				"value":"testValue",
 				"expiresSeconds":3600,
 				"maxAge": 1
@@ -92,9 +92,11 @@ var _ = Describe("Cookies", func() {
 				"maxAge": 1
 			}`))
 		})
+	})
+	Context("when cookie already exists", func() {
 		It("don't overwrite existing cookie", func() {
 
-			ctx, req, responseRecorder := mockContext(`{"value":"testValue"}`)
+			ctx, req, responseRecorder := mockPostContext(`{"value":"testValue"}`)
 			req.AddCookie(&http.Cookie{
 				Name: "testCookie",
 				Path: "/",
@@ -102,7 +104,7 @@ var _ = Describe("Cookies", func() {
 			err := cookies.PostHandler(ctx)
 			Expect(err).Should(BeNil())
 
-			// return 200
+			// return 400
 			Expect(responseRecorder.Code).Should(Equal(400))
 			Expect(responseRecorder.Body.String()).Should(Equal("Cookie testCookie already exists"))
 		})
@@ -110,7 +112,7 @@ var _ = Describe("Cookies", func() {
 	})
 })
 
-func mockContext(testCookie string) (echo.Context, *http.Request, *httptest.ResponseRecorder) {
+func mockPostContext(testCookie string) (echo.Context, *http.Request, *httptest.ResponseRecorder) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "http://myapp.com/api/cookies", strings.NewReader(testCookie))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
