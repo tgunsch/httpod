@@ -9,6 +9,10 @@ Features:
 * **Status codes**: Generates responses with given status code
 * **Cookies**: Creates, reads and deletes cookies
 
+The service supports some features, helpful for testing in kubernetes or istio environments:
+* With environment variable `BASE_PATH`, a "*context root*" can be configured. This is helpful if routing is done via path prefix. 
+* The service handles `X-Forwarded-Host` and `X-Forwarded-Prefix` headers. This is helpful, if ingress controller or virtual services rewrite the destination path. 
+
 ## Devel
 
 ```shell
