@@ -4,6 +4,11 @@
 ![Docker Image](https://github.com/tgunsch/httpod/workflows/Docker%20Image%20CI/badge.svg)
 A simple HTTP Request & Response Service written in go, shamelessly stolen from https://httpbin.org.
 
+Features:
+* **HTTP Methods**: Testing DELETE, GET, PATCH, POST and  PUT requests. TODO: add url parameters
+* **Status codes**: Generates responses with given status code
+* **Cookies**: Creates, reads and deletes cookies
+
 ## Devel
 
 ```shell
@@ -18,8 +23,14 @@ go run cmd/main.go
 # Open browser on http://localhost:8080/swagger/index.html
 ```
 
-## Build docker image
+## Run docker image
 
 ```shell
-docker build -t thgunsch/httpod
+docker pull ghcr.io/tgunsch/httpod:latest
+
+# Access http://localhost:8080/swagger/index.html
+docker run --rm -p 8080:8080  ghcr.io/tgunsch/httpod:latest
+
+# Access http://localhost:8080/httpod/swagger/index.html
+docker run --rm -p 8080:8080  -e BASE_PATH=httpod ghcr.io/tgunsch/httpod:latest
 ```
