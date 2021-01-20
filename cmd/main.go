@@ -27,6 +27,7 @@ func main() {
 		SWAGGER_PATH  = "/swagger"
 		API_PATH      = "/api"
 		BASE_PATH_ENV = "BASE_PATH"
+		PORT          = "PORT"
 	)
 	server := echo.New()
         port := os.Getenv(PORT)
