@@ -29,6 +29,10 @@ func main() {
 		BASE_PATH_ENV = "BASE_PATH"
 	)
 	server := echo.New()
+        port := os.Getenv(PORT)
+	if port == "" {
+		port = "8080"
+	}
 	basePath := os.Getenv(BASE_PATH_ENV)
 	if basePath != "" {
 		basePath = "/" + basePath
@@ -59,7 +63,7 @@ func main() {
 	api.POST("/cookies/:cookieName", cookies.PostHandler)
 	api.DELETE("/cookies/:cookieName", cookies.DeleteHandler)
 
-	server.Logger.Fatal(server.Start(":8080"))
+	server.Logger.Fatal(server.Start(":" + port))
 }
 
 func swaggerMiddleware(path string) echo.MiddlewareFunc {
