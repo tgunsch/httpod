@@ -522,7 +522,7 @@
                     "type": "string"
                 },
                 "expires": {
-                    "type": "string"
+                    "$ref": "#/definitions/cookies.JSONTime"
                 },
                 "httpOnly": {
                     "type": "boolean"
@@ -546,6 +546,14 @@
                     "type": "boolean"
                 },
                 "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "cookies.JSONTime": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
                     "type": "string"
                 }
             }
@@ -598,7 +606,10 @@
                         "type": "string"
                     }
                 },
-                "origin": {
+                "host": {
+                    "type": "string"
+                },
+                "remote-address": {
                     "type": "string"
                 },
                 "url": {

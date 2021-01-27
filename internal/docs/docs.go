@@ -539,7 +539,7 @@ var doc = `{
                     "type": "string"
                 },
                 "expires": {
-                    "type": "string"
+                    "$ref": "#/definitions/cookies.JSONTime"
                 },
                 "httpOnly": {
                     "type": "boolean"
@@ -563,6 +563,14 @@ var doc = `{
                     "type": "boolean"
                 },
                 "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "cookies.JSONTime": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
                     "type": "string"
                 }
             }
@@ -615,7 +623,10 @@ var doc = `{
                         "type": "string"
                     }
                 },
-                "origin": {
+                "host": {
+                    "type": "string"
+                },
+                "remote-address": {
                     "type": "string"
                 },
                 "url": {

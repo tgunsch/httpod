@@ -2,16 +2,21 @@
 
 ![Build](https://github.com/tgunsch/httpod/workflows/Go/badge.svg)
 ![Docker Image](https://github.com/tgunsch/httpod/workflows/Docker%20Image%20CI/badge.svg)
-A simple HTTP Request & Response Service written in go, shamelessly stolen from https://httpbin.org.
 
-Features:
+A simple HTTP Request & Response Service written in go, shamelessly stolen from [httpbin](https://httpbin.org).
+
+![swagger-ui](docs/swagger-ui.png)
+
+### Additional features
+Like the famous `httpbin` this service provides several API's for testing HTTP requests and a 
+corresponding swagger GUI. It adds some features helpful for testing in kubernetes or istio environments:
+* With environment variable `BASE_PATH`, a "*context root*" can be configured. This is helpful if routing is done via path prefix.
+* The service handles `X-Forwarded-Host` and `X-Forwarded-Prefix` headers. This is helpful, if ingress controller or virtual services rewrite the destination path.
+
+### Currently implemented API's:
 * **HTTP Methods**: Testing DELETE, GET, PATCH, POST and  PUT requests. TODO: add url parameters
 * **Status codes**: Generates responses with given status code
 * **Cookies**: Creates, reads and deletes cookies
-
-The service supports some features, helpful for testing in kubernetes or istio environments:
-* With environment variable `BASE_PATH`, a "*context root*" can be configured. This is helpful if routing is done via path prefix. 
-* The service handles `X-Forwarded-Host` and `X-Forwarded-Prefix` headers. This is helpful, if ingress controller or virtual services rewrite the destination path. 
 
 ## Devel
 

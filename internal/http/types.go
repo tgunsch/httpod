@@ -9,18 +9,20 @@ import (
 )
 
 type Response struct {
-	Args    map[string]string `json:"args"`
-	Headers map[string]string `json:"headers"`
-	Origin  string            `json:"origin"`
-	Url     string            `json:"url"`
+	Host       string            `json:"host"`
+	RemoteAddr string            `json:"remote-address"`
+	Url        string            `json:"url"`
+	Args       map[string]string `json:"args"`
+	Headers    map[string]string `json:"headers"`
 }
 
 func ResponseFromContext(c echo.Context) string {
 	response := Response{
-		Headers: getHeaders(c),
-		Args:    getParams(c),
-		Origin:  c.Request().Host,
-		Url:     fmt.Sprintf("%s%s", c.Request().Host, c.Request().URL.Path),
+		Headers:    getHeaders(c),
+		Args:       getParams(c),
+		Host:       c.Request().Host,
+		RemoteAddr: c.Request().RemoteAddr,
+		Url:        fmt.Sprintf("%s%s", c.Request().Host, c.Request().URL.Path),
 	}
 	prettyJSON, err := json.MarshalIndent(response, "", "   ")
 	if err != nil {
