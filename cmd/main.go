@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/swaggo/echo-swagger"
 	"github.com/tgunsch/httpod/internal/cookies"
@@ -8,7 +9,9 @@ import (
 	"github.com/tgunsch/httpod/internal/http"
 	"github.com/tgunsch/httpod/internal/status"
 	"github.com/tgunsch/httpod/internal/util"
+	"html"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -30,7 +33,9 @@ func main() {
 		PORT          = "PORT"
 	)
 	server := echo.New()
-        port := os.Getenv(PORT)
+	server.HideBanner = true
+	server.HidePort = true
+	port := os.Getenv(PORT)
 	if port == "" {
 		port = "8080"
 	}
@@ -64,7 +69,14 @@ func main() {
 	api.POST("/cookies/:cookieName", cookies.PostHandler)
 	api.DELETE("/cookies/:cookieName", cookies.DeleteHandler)
 
+	println(banner("http://localhost:" + port + SWAGGER_PATH + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
+}
+
+func banner(localUrl string) string {
+	const BANNER = `/ˌeɪtʃ tiː tiː ˈpɒd/ %s trapping on %s`
+	honeyPod := html.UnescapeString("&#" + strconv.Itoa(0x1f36f) + ";")
+	return fmt.Sprintf(BANNER, honeyPod, localUrl)
 }
 
 func swaggerMiddleware(path string) echo.MiddlewareFunc {

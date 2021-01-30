@@ -3,7 +3,7 @@
 ![Build](https://github.com/tgunsch/httpod/workflows/Go/badge.svg)
 ![Docker Image](https://github.com/tgunsch/httpod/workflows/Docker%20Image%20CI/badge.svg)
 
-A simple HTTP Request & Response Service written in go, shamelessly stolen from [httpbin](https://httpbin.org).
+/ˌeɪtʃ tiː tiː ˈpɒd/: a simple HTTP Request & Response Service written in go, shamelessly stolen from [httpbin](https://httpbin.org).
 
 ![swagger-ui](docs/swagger-ui.png)
 
