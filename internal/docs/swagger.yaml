@@ -166,6 +166,23 @@ paths:
       summary: Do a GET request.
       tags:
       - HTTP Methods
+  /jwt:
+    get:
+      consumes:
+      - application/json
+      description: Requests using GET should only retrieve data.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/cookies.GetCookies'
+            type: array
+      summary: Get jwt of the request.
+      tags:
+      - JWT
   /patch:
     patch:
       consumes:
