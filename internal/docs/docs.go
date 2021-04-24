@@ -164,6 +164,32 @@ var doc = `{
                 }
             }
         },
+        "/jwt": {
+            "get": {
+                "description": "Requests using GET should only retrieve data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JWT"
+                ],
+                "summary": "Get jwt of the request.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/cookies.GetCookies"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/patch": {
             "patch": {
                 "description": "The PATCH method is used to apply partial modifications to a resource.",

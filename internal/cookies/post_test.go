@@ -26,7 +26,7 @@ var _ = Describe("PostHandler", func() {
 
 			// response has set-cookie
 			setCookieHeader := responseRecorder.Result().Header["Set-Cookie"][0]
-			Expect(setCookieHeader).Should(Equal("testCookie=testValue; Domain=myapp.com; SameSite"))
+			Expect(setCookieHeader).Should(Equal("testCookie=testValue; Domain=myapp.com"))
 
 			// response body contains json cookie
 			Expect(responseRecorder.Body.String()).To(MatchJSON(`{ "name": "testCookie", "value": "testValue", "domain": "myapp.com" }`))
@@ -83,7 +83,7 @@ var _ = Describe("PostHandler", func() {
 
 			// response has set-cookie
 			setCookieHeader := responseRecorder.Result().Header["Set-Cookie"][0]
-			Expect(setCookieHeader).Should(Equal("testCookie=testValue; Domain=myapp.com; Max-Age=1; SameSite"))
+			Expect(setCookieHeader).Should(Equal("testCookie=testValue; Domain=myapp.com; Max-Age=1"))
 			// response body contains json cookie
 			Expect(responseRecorder.Body.String()).To(MatchJSON(`{
 				"name": "testCookie", 

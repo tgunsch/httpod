@@ -7,6 +7,7 @@ import (
 	"github.com/tgunsch/httpod/internal/cookies"
 	"github.com/tgunsch/httpod/internal/docs"
 	"github.com/tgunsch/httpod/internal/http"
+	"github.com/tgunsch/httpod/internal/jwt"
 	"github.com/tgunsch/httpod/internal/status"
 	"github.com/tgunsch/httpod/internal/util"
 	"html"
@@ -68,6 +69,8 @@ func main() {
 	api.GET("/cookies", cookies.GetHandler)
 	api.POST("/cookies/:cookieName", cookies.PostHandler)
 	api.DELETE("/cookies/:cookieName", cookies.DeleteHandler)
+
+	api.GET("/jwt", jwt.GetHandler)
 
 	println(banner("http://localhost:" + port + SWAGGER_PATH + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
