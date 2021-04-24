@@ -9,12 +9,12 @@ import (
 	"strings"
 )
 
-// @Summary Get jwt of the request.
+// @Summary Get jwt passed as authorization bearer token of the request.
 // @Tags JWT
 // @Description Requests using GET should only retrieve data.
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} cookies.GetCookies
+// @Success 200 {array} jwt.Token
 // @Router /jwt [get]
 func GetHandler(context echo.Context) error {
 
@@ -26,11 +26,12 @@ func GetHandler(context echo.Context) error {
 		if err != nil {
 			return context.String(http.StatusBadRequest, fmt.Sprintf("failed to parse payload: %s\n", err))
 		}
-		buf, err := json.MarshalIndent(token, "", "  ")
+
+		prettyJSON, err := json.MarshalIndent(token, "", "   ")
 		if err != nil {
-			return context.String(http.StatusBadRequest, fmt.Sprintf("failed to generate JSON: %s\n", err))
+			return context.String(http.StatusBadRequest, fmt.Sprintf("Error parsing cookies: %v", err.Error()))
 		}
-		return context.String(http.StatusOK, string(buf))
+		return context.String(http.StatusOK, string(prettyJSON))
 	}
 	return context.String(http.StatusBadRequest, "No JWT in request header")
 
