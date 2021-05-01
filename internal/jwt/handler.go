@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"github.com/lestrrat-go/jwx/jwt"
 	"net/http"
-	"strings"
 )
 
 // @Summary Get jwt passed as authorization bearer token of the request.
@@ -22,16 +20,19 @@ func GetHandler(context echo.Context) error {
 	l := len("Bearer")
 	if auth[:l] == "Bearer" {
 		rawToken := auth[l+1:]
-		token, err := jwt.ParseReader(strings.NewReader(rawToken))
+
+		response, err := NewResponse(rawToken)
 		if err != nil {
 			return context.String(http.StatusBadRequest, fmt.Sprintf("failed to parse payload: %s\n", err))
 		}
 
-		prettyJSON, err := json.MarshalIndent(token, "", "   ")
+
+		prettyJSON, err := json.MarshalIndent(response, "", "   ")
 		if err != nil {
 			return context.String(http.StatusBadRequest, fmt.Sprintf("Error parsing cookies: %v", err.Error()))
 		}
 		return context.String(http.StatusOK, string(prettyJSON))
+
 	}
 	return context.String(http.StatusBadRequest, "No JWT in request header")
 
