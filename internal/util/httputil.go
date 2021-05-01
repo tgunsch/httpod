@@ -1,9 +1,11 @@
 package util
 
 import (
+	"github.com/labstack/echo/v4"
 	"net"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -89,4 +91,12 @@ func GetUrl(path string, request *http.Request) string {
 	}
 	return url.String()
 
+}
+
+func GetBoolParam(ctx echo.Context, name string) bool {
+	value, err := strconv.ParseBool(ctx.QueryParam(name))
+	if err != nil {
+		return false
+	}
+	return value
 }
