@@ -17,6 +17,7 @@ corresponding swagger GUI. It adds some features helpful for testing in kubernet
 * **HTTP Methods**: Testing DELETE, GET, PATCH, POST and  PUT requests. TODO: add url parameters
 * **Status codes**: Generates responses with given status code
 * **Cookies**: Creates, reads and deletes cookies
+* **JWT**: Show and validated JWT Bearer Token
 
 ## Devel
 
