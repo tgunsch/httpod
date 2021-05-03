@@ -7,7 +7,8 @@ import (
 	"net/http"
 )
 
-// @Summary Get all cookies of the request.
+// GetHandler for GET cookies
+//  @Summary Get all cookies of the request.
 // @Tags Cookies
 // @Description Requests using GET should only retrieve data.
 // @Accept  json
@@ -18,7 +19,7 @@ func GetHandler(context echo.Context) error {
 	cookies := context.Cookies()
 	getCookies := make([]GetCookies, len(cookies))
 	for i, cookie := range cookies {
-		getCookies[i] = toJsonCookie(cookie)
+		getCookies[i] = toJSONCookie(cookie)
 	}
 	prettyJSON, err := json.MarshalIndent(getCookies, "", "   ")
 	if err != nil {
@@ -27,6 +28,7 @@ func GetHandler(context echo.Context) error {
 	return context.String(http.StatusOK, string(prettyJSON))
 }
 
+// DeleteHandler for DELETE cookies
 // @Summary Delete a cookie.
 // @Tags Cookies
 // @Description Delete a specific cookie.
@@ -43,7 +45,7 @@ func DeleteHandler(context echo.Context) error {
 		Path:   "/",
 	}
 	context.SetCookie(cookie)
-	getCookie := toJsonCookie(cookie)
+	getCookie := toJSONCookie(cookie)
 	prettyJSON, err := json.MarshalIndent(getCookie, "", "   ")
 	if err != nil {
 		return context.String(http.StatusBadRequest, fmt.Sprintf("Error parsing cookies: %v", err.Error()))
@@ -51,6 +53,7 @@ func DeleteHandler(context echo.Context) error {
 	return context.String(http.StatusOK, string(prettyJSON))
 }
 
+// PostHandler for creating new cookies
 // @Summary Create a new cookie.
 // @Tags Cookies
 // @Description
@@ -68,12 +71,12 @@ func PostHandler(context echo.Context) error {
 		return context.String(http.StatusBadRequest, fmt.Sprintf("Cookie %s already exists", name))
 	}
 
-	cookie, err := toHttpCookie(context)
+	cookie, err := toHTTPCookie(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, fmt.Sprintf("Oops: %v", err))
 	}
 	context.SetCookie(cookie)
-	jsonCookie := toJsonCookie(cookie)
+	jsonCookie := toJSONCookie(cookie)
 	prettyJSON, err := json.MarshalIndent(jsonCookie, "", "   ")
 	if err != nil {
 		return context.String(http.StatusBadRequest, fmt.Sprintf("Error parsing cookies: %v", err.Error()))

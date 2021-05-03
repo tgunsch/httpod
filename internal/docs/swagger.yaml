@@ -68,12 +68,25 @@ definitions:
       url:
         type: string
     type: object
+  jwt.Response:
+    properties:
+      header:
+        additionalProperties: true
+        type: object
+      payload:
+        additionalProperties: true
+        type: object
+      raw:
+        type: string
+      valid:
+        type: boolean
+    type: object
 info:
   contact: {}
   description: A simple HTTP Request & HTTPResponse Service, shamelessly stolen from
     httpbin.org.
   title: httPod
-  version: 0.0.1
+  version: 0.0.4
 paths:
   /cookies:
     get:
@@ -171,6 +184,11 @@ paths:
       consumes:
       - application/json
       description: Requests using GET should only retrieve data.
+      parameters:
+      - description: if set, the jwt is verified with the key received from jwks endpoint
+        in: query
+        name: jwksUri
+        type: string
       produces:
       - application/json
       responses:
@@ -178,9 +196,9 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/cookies.GetCookies'
+              $ref: '#/definitions/jwt.Response'
             type: array
-      summary: Get jwt of the request.
+      summary: Get jwt passed as authorization bearer token of the request.
       tags:
       - JWT
   /patch:

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/tgunsch/httpod/internal/util"
 	"net/http"
 )
 
@@ -15,9 +14,8 @@ import (
 // @Description Requests using GET should only retrieve data.
 // @Accept  json
 // @Produce  json
-// @Param validate query bool false "if true, the jwt is validated"
 // @Param jwksUri query string false "if set, the jwt is verified with the key received from jwks endpoint"
-// @Success 200 {array} jwt.Token
+// @Success 200 {array} jwt.Response
 // @Router /jwt [get]
 func GetHandler(ctx echo.Context) error {
 	var (
@@ -26,7 +24,6 @@ func GetHandler(ctx echo.Context) error {
 		err        error
 		response   *Response
 		prettyJSON []byte
-		validate   bool
 	)
 
 	auth = ctx.Request().Header.Get(echo.HeaderAuthorization)
@@ -40,8 +37,7 @@ func GetHandler(ctx echo.Context) error {
 				return ctx.String(http.StatusBadRequest, fmt.Sprintf("failed to validate token: %s\n", err))
 			}
 		}
-		validate = util.GetBoolParam(ctx, "validate")
-		if response, err = NewResponse(rawToken, validate, keys); err != nil {
+		if response, err = NewResponse(rawToken, keys); err != nil {
 			return ctx.String(http.StatusBadRequest, fmt.Sprintf("failed to parse payload: %s\n", err))
 		}
 

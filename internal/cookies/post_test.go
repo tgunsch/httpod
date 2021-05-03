@@ -55,7 +55,7 @@ var _ = Describe("PostHandler", func() {
 			expireString := expireTime.UTC().Format(http.TimeFormat)
 			Expect(setCookieHeader).Should(Equal("testCookie=testValue; Path=/blubb; Domain=myapp.com; Expires=" + expireString + "; HttpOnly; Secure; SameSite=Strict"))
 			// response body contains json cookie
-			expireJson := expireTime.Format(cookies.TIME_FORMAT)
+			expireJson := expireTime.Format(cookies.TimeFormat)
 			Expect(responseRecorder.Body.String()).To(MatchJSON(`{
 				"name": "testCookie", 
 				"value": "testValue", 

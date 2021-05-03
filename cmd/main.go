@@ -17,7 +17,7 @@ import (
 )
 
 // @title httPod
-// @version 0.0.1
+// @version 0.0.4
 // @description A simple HTTP Request & HTTPResponse Service, shamelessly stolen from httpbin.org.
 // @tag.name HTTP Methods
 // @tag.description Testing different HTTP methods
@@ -28,10 +28,10 @@ import (
 
 func main() {
 	const (
-		SWAGGER_PATH  = "/swagger"
-		API_PATH      = "/api"
-		BASE_PATH_ENV = "BASE_PATH"
-		PORT          = "PORT"
+		SwaggerPath = "/swagger"
+		ApiPath     = "/api"
+		BasePathEnv = "BASE_PATH"
+		PORT        = "PORT"
 	)
 	server := echo.New()
 	server.HideBanner = true
@@ -40,7 +40,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	basePath := os.Getenv(BASE_PATH_ENV)
+	basePath := os.Getenv(BasePathEnv)
 	if basePath != "" {
 		basePath = "/" + basePath
 	}
@@ -50,10 +50,10 @@ func main() {
 	// api will be available on /basePath/api
 	// swagger info will use X-Forwarded headers if available;
 	// e.g.: X-Forwarded-Host=my.domain.com X-Forwarded-Prefix=myPrefix swagger ui show api on url http://my.domain.com/myPrefix/basePath/api
-	apiPath := basePath + API_PATH
-	endpoints.GET(SWAGGER_PATH+"/*", echoSwagger.WrapHandler, swaggerMiddleware(apiPath))
+	apiPath := basePath + ApiPath
+	endpoints.GET(SwaggerPath+"/*", echoSwagger.WrapHandler, swaggerMiddleware(apiPath))
 
-	api := endpoints.Group(API_PATH)
+	api := endpoints.Group(ApiPath)
 	api.GET("/get", http.GetHandler)
 	api.DELETE("/delete", http.DeleteHandler)
 	api.PATCH("/patch", http.PatchHandler)
@@ -72,14 +72,14 @@ func main() {
 
 	api.GET("/jwt", jwt.GetHandler)
 
-	println(banner("http://localhost:" + port + SWAGGER_PATH + "/index.html"))
+	println(banner("http://localhost:" + port + SwaggerPath + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
 }
 
-func banner(localUrl string) string {
+func banner(localURL string) string {
 	const BANNER = `/ˌeɪtʃ tiː tiː ˈpɒd/ %s trapping on %s`
 	honeyPod := html.UnescapeString("&#" + strconv.Itoa(0x1f36f) + ";")
-	return fmt.Sprintf(BANNER, honeyPod, localUrl)
+	return fmt.Sprintf(BANNER, honeyPod, localURL)
 }
 
 func swaggerMiddleware(path string) echo.MiddlewareFunc {
