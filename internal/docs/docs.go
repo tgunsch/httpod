@@ -176,14 +176,22 @@ var doc = `{
                 "tags": [
                     "JWT"
                 ],
-                "summary": "Get jwt of the request.",
+                "summary": "Get jwt passed as authorization bearer token of the request.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "if set, the jwt is verified with the key received from jwks endpoint",
+                        "name": "jwksUri",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/cookies.GetCookies"
+                                "$ref": "#/definitions/jwt.Response"
                             }
                         }
                     }
@@ -659,6 +667,25 @@ var doc = `{
                     "type": "string"
                 }
             }
+        },
+        "jwt.Response": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "raw": {
+                    "type": "string"
+                },
+                "valid": {
+                    "type": "boolean"
+                }
+            }
         }
     },
     "tags": [
@@ -688,7 +715,7 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.0.1",
+	Version:     "0.0.4",
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},

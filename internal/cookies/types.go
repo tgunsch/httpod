@@ -9,12 +9,15 @@ import (
 	"time"
 )
 
-const TIME_FORMAT = "2006-01-02T15:04:05Z07:00"
+// TimeFormat standard time format for response
+const TimeFormat = "2006-01-02T15:04:05Z07:00"
 
+// JSONTime for serializing time in TimeFormat
 type JSONTime struct {
 	time.Time
 }
 
+// GetCookies response for GET cookies
 type GetCookies struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
@@ -25,21 +28,22 @@ type GetCookies struct {
 	RawExpires string    `json:"rawExpires,omitempty"`
 	MaxAge     int       `json:"maxAge,omitempty"`
 	Secure     bool      `json:"secure,omitempty"`
-	HttpOnly   bool      `json:"httpOnly,omitempty"`
+	HTTPOnly   bool      `json:"httpOnly,omitempty"`
 	SameSite   string    `json:"sameSite,omitempty"`
 }
 
+// SetCookie request body for creating or updating cookies
 type SetCookie struct {
 	Value          string `json:"value" example:"Test"`
 	Path           string `json:"path,omitempty" example:"/"`
 	ExpiresSeconds int    `json:"expiresSeconds,omitempty" example:"3600"`
 	MaxAge         int    `json:"maxAge,omitempty" example:"0"`
 	Secure         bool   `json:"secure,omitempty" example:"true"`
-	HttpOnly       bool   `json:"httpOnly,omitempty" example:"true"`
+	HTTPOnly       bool   `json:"httpOnly,omitempty" example:"true"`
 	SameSite       string `json:"sameSite,omitempty"  example:"Strict"`
 }
 
-func toJsonCookie(cookie *http.Cookie) GetCookies {
+func toJSONCookie(cookie *http.Cookie) GetCookies {
 	var expires *JSONTime = nil
 	if cookie.Expires.After(time.Time{}) {
 		expires = &JSONTime{cookie.Expires}
@@ -53,12 +57,12 @@ func toJsonCookie(cookie *http.Cookie) GetCookies {
 		RawExpires: cookie.RawExpires,
 		MaxAge:     cookie.MaxAge,
 		Secure:     cookie.Secure,
-		HttpOnly:   cookie.HttpOnly,
+		HTTPOnly:   cookie.HttpOnly,
 		SameSite:   sameSiteString(cookie.SameSite),
 	}
 }
 
-func toHttpCookie(context echo.Context) (*http.Cookie, error) {
+func toHTTPCookie(context echo.Context) (*http.Cookie, error) {
 	cookie := new(SetCookie)
 	if err := context.Bind(cookie); err != nil {
 		return nil, err
@@ -83,7 +87,7 @@ func toHttpCookie(context echo.Context) (*http.Cookie, error) {
 		Expires:  expires,
 		MaxAge:   maxAge,
 		Secure:   cookie.Secure,
-		HttpOnly: cookie.HttpOnly,
+		HttpOnly: cookie.HTTPOnly,
 		SameSite: sameSite(cookie.SameSite),
 	}, nil
 }
@@ -116,8 +120,8 @@ func sameSite(s string) http.SameSite {
 	}
 }
 
+// MarshalJSON marshals a JSONTime in standard TimeFormat
 func (t JSONTime) MarshalJSON() ([]byte, error) {
-	//do your serializing here
-	stamp := fmt.Sprintf("\"%s\"", t.Format(TIME_FORMAT))
+	stamp := fmt.Sprintf("\"%s\"", t.Format(TimeFormat))
 	return []byte(stamp), nil
 }

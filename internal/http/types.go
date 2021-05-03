@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo/v4"
-	"net/http"
 	"strings"
 )
 
@@ -46,17 +45,4 @@ func getParams(c echo.Context) map[string]string {
 		parameters[name] = c.Param(name)
 	}
 	return parameters
-}
-
-// getHost tries its best to return the request host.
-func getHost(r *http.Request) string {
-	if r.URL.IsAbs() {
-		host := r.Host
-		// Slice off any port information.
-		if i := strings.Index(host, ":"); i != -1 {
-			host = host[:i]
-		}
-		return host
-	}
-	return r.URL.Host
 }
