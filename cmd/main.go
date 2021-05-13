@@ -72,7 +72,7 @@ func main() {
 
 	api.GET("/jwt", jwt.GetHandler)
 
-	println(banner("http://localhost:" + port + SwaggerPath + "/index.html"))
+	println(banner("http://localhost:" + port + basePath + SwaggerPath + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
 }
 
