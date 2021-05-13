@@ -35,12 +35,16 @@ go run cmd/main.go
 
 ## Run docker image
 
+Two docker images are available:
+* latest: based on `ubuntu`. This is mainly for debugging purpose (i.e. running curl in running container)
+* latest-slim: scratch image only containing the binary 
+
 ```shell
-docker pull ghcr.io/tgunsch/httpod:latest
+docker pull ghcr.io/tgunsch/httpod:latest-slim
 
 # Access http://localhost:8080/swagger/index.html
-docker run --rm -p 8080:8080  ghcr.io/tgunsch/httpod:latest
+docker run --rm -p 8080:8080  ghcr.io/tgunsch/httpod:latest-slim
 
 # Access http://localhost:8080/httpod/swagger/index.html
-docker run --rm -p 8080:8080  -e BASE_PATH=httpod ghcr.io/tgunsch/httpod:latest
+docker run --rm -p 8080:8080  -e BASE_PATH=httpod ghcr.io/tgunsch/httpod:latest-slim
 ```
