@@ -8,6 +8,7 @@ import (
 	"github.com/tgunsch/httpod/internal/docs"
 	"github.com/tgunsch/httpod/internal/http"
 	"github.com/tgunsch/httpod/internal/jwt"
+	"github.com/tgunsch/httpod/internal/proxy"
 	"github.com/tgunsch/httpod/internal/status"
 	"github.com/tgunsch/httpod/internal/util"
 	"html"
@@ -71,6 +72,8 @@ func main() {
 	api.DELETE("/cookies/:cookieName", cookies.DeleteHandler)
 
 	api.GET("/jwt", jwt.GetHandler)
+
+	api.GET("/proxy/:target", proxy.GetHandler)
 
 	println(banner("http://localhost:" + port + basePath + SwaggerPath + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
