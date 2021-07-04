@@ -227,6 +227,29 @@
                 }
             }
         },
+        "/proxy/{target}": {
+            "get": {
+                "description": "Requests using proxy GET should query target.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy Methods"
+                ],
+                "summary": "Do a GET request.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/http.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/put": {
             "put": {
                 "description": "The PUT method replaces all current representations of the target resource with the request payload.",

@@ -232,6 +232,21 @@ paths:
       summary: Do a POST request.
       tags:
       - HTTP Methods
+  /proxy/{target}:
+    get:
+      consumes:
+      - application/json
+      description: Requests using proxy GET should query target.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/http.Response'
+      summary: Do a GET request.
+      tags:
+      - Proxy Methods
   /put:
     put:
       consumes:
