@@ -37,14 +37,14 @@ func GetHandler(context echo.Context) error {
 
 func responseFromTarget(context echo.Context) (*Response, error) {
 	var (
-		target     string
-		tr         *http.Transport
-		c          *http.Client
-		targetReq  *http.Request
-		targetResp *http.Response
-		resp       *Response
-		respBody   []byte
-		err        error
+		target         string
+		tr             *http.Transport
+		c              *http.Client
+		targetReq      *http.Request
+		targetResp     *http.Response
+		resp           *Response
+		targetRespBody []byte
+		err            error
 	)
 
 	target = context.Param("target")
@@ -56,9 +56,8 @@ func responseFromTarget(context echo.Context) (*Response, error) {
 		DisableCompression: true,
 	}
 
-	c = &http.Client{
-		Transport: tr,
-	}
+	c = &http.Client{Transport: tr}
+
 	if targetReq, err = http.NewRequest(http.MethodGet, target, nil); err != nil {
 		// TODO Return response code
 		return nil, errors.New("Illegal request: " + target)
@@ -72,14 +71,15 @@ func responseFromTarget(context echo.Context) (*Response, error) {
 	}
 	defer targetResp.Body.Close()
 
-	if respBody, err = ioutil.ReadAll(targetResp.Body); err != nil {
+	if targetRespBody, err = ioutil.ReadAll(targetResp.Body); err != nil {
 		return nil, errors.New("Error parsing body: " + err.Error())
 	}
 
 	resp = &Response{
-		Url:     resp.Url,
-		Headers: resp.Headers,
-		Body:    string(respBody),
+		Code: targetResp.StatusCode,
+		Url:  targetReq.URL.RequestURI(),
+		//Headers: targetResp.Header, // TODO Iterate
+		Body: string(targetRespBody),
 	}
 
 	return resp, nil
