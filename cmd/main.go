@@ -90,9 +90,9 @@ func swaggerMiddleware(path string) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			if strings.HasSuffix(c.Request().URL.Path, "index.html") {
 
-				scheme, host := util.GetSchemeHost(c.Request())
+				_, host := util.GetSchemeHost(c.Request())
 				docs.SwaggerInfo.Host = host
-				docs.SwaggerInfo.Schemes = []string{scheme}
+				docs.SwaggerInfo.Schemes = []string{"https", "http"}
 
 				docs.SwaggerInfo.BasePath = util.GetPath(path, c.Request())
 			}
