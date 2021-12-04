@@ -10,11 +10,12 @@ type BackendRequest struct {
 	Url               *url.URL
 	AdditionalHeaders map[string]string
 	Request           *http.Request
+	HttpClient        *http.Client
 }
 
 type BackendResponse struct {
-	Code    int
-	Url     string
-	Headers http.Header
-	Body    string
+	StatusCode int
+	URI        string
+	Headers    *http.Header
+	Body       string
 }
