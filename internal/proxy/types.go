@@ -6,11 +6,10 @@ import (
 )
 
 type BackendRequest struct {
-	Method            string
-	Url               *url.URL
-	AdditionalHeaders map[string]string
-	Request           *http.Request
-	HttpClient        *http.Client
+	Method     string
+	URI        *url.URL
+	Request    *http.Request
+	HttpClient *http.Client
 }
 
 type BackendResponse struct {

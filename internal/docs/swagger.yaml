@@ -236,24 +236,16 @@ paths:
     get:
       consumes:
       - application/json
-      description: Query httpod as reverse proxy to url.
+      description: Query httpod as reverse proxy to uri.
       parameters:
-      - description: 'Full URL to use for the backend request. Mandatory. e.g. https://example.org/path '
+      - description: 'Full URI to use for the backend request. Mandatory. e.g. https://example.org/path '
         in: header
-        name: url
+        name: uri
         type: string
       - description: Method to use for the backend request. Optional, defaults to
           'GET'.
         in: header
         name: method
-        type: string
-      - description: Body to use for a POST request. Optional.
-        in: header
-        name: body
-        type: string
-      - description: JSON of headers to add to the backend request. Optional.
-        in: header
-        name: additionalHeaders
         type: string
       produces:
       - application/json

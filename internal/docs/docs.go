@@ -245,7 +245,7 @@ var doc = `{
         },
         "/proxy": {
             "get": {
-                "description": "Query httpod as reverse proxy to url.",
+                "description": "Query httpod as reverse proxy to uri.",
                 "consumes": [
                     "application/json"
                 ],
@@ -259,26 +259,14 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Full URL to use for the backend request. Mandatory. e.g. https://example.org/path ",
-                        "name": "url",
+                        "description": "Full URI to use for the backend request. Mandatory. e.g. https://example.org/path ",
+                        "name": "uri",
                         "in": "header"
                     },
                     {
                         "type": "string",
                         "description": "Method to use for the backend request. Optional, defaults to 'GET'.",
                         "name": "method",
-                        "in": "header"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Body to use for a POST request. Optional.",
-                        "name": "body",
-                        "in": "header"
-                    },
-                    {
-                        "type": "string",
-                        "description": "JSON of headers to add to the backend request. Optional.",
-                        "name": "additionalHeaders",
                         "in": "header"
                     }
                 ],

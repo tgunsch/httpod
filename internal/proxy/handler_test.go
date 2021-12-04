@@ -37,19 +37,19 @@ func TestGetHandler(t *testing.T) {
 		},
 		{
 			inputHeaders: map[string][]string{
-				"url": {"://localhost"},
+				"uri": {"://localhost"},
 			},
 			expectResponseCode: 400,
 		},
 		{
 			inputHeaders: map[string][]string{
-				"url": {"http://localhost"},
+				"uri": {"http://localhost"},
 			},
 			expectResponseCode: 200,
 		},
 		{
 			inputHeaders: map[string][]string{
-				"url": {"http://localhost:9876"},
+				"uri": {"http://localhost:9876"},
 			},
 			expectResponseCode: 500,
 			httpClient:         http.DefaultClient,
@@ -75,8 +75,9 @@ func TestGetHandler(t *testing.T) {
 		err = proxy.GetHandler(ctx)
 
 		assert.Nil(t, err)
-		assert.Equal(t, table.expectResponseCode, ctx.Response().Status)
-		fmt.Printf("%+v \n", ctx.Response().Writer)
+		if assert.Equal(t, table.expectResponseCode, ctx.Response().Status) == false {
+			fmt.Printf("%+v \n", ctx.Response().Writer)
+		}
 
 		proxy.Br = proxy.BackendRequest{}
 		e = nil
