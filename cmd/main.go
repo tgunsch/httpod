@@ -73,7 +73,7 @@ func main() {
 
 	api.GET("/jwt", jwt.GetHandler)
 
-	api.GET("/proxy/:target", proxy.GetHandler)
+	api.GET("/proxy", proxy.GetHandler)
 
 	println(banner("http://localhost:" + port + basePath + SwaggerPath + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
