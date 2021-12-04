@@ -92,7 +92,7 @@ func swaggerMiddleware(path string) echo.MiddlewareFunc {
 
 				_, host := util.GetSchemeHost(c.Request())
 				docs.SwaggerInfo.Host = host
-				docs.SwaggerInfo.Schemes = []string{"https", "http"}
+				docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 				docs.SwaggerInfo.BasePath = util.GetPath(path, c.Request())
 			}

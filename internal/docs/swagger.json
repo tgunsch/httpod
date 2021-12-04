@@ -229,7 +229,7 @@
         },
         "/proxy": {
             "get": {
-                "description": "Requests using proxy GET should query target.",
+                "description": "Query httpod as reverse proxy to url.",
                 "consumes": [
                     "application/json"
                 ],
@@ -243,35 +243,38 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Method to use for the backend request. Defaults to 'GET'.",
-                        "name": "method",
-                        "in": "header"
-                    },
-                    {
-                        "type": "string",
-                        "description": "URL to use for the backend request.",
+                        "description": "Full URL to use for the backend request. Mandatory. e.g. https://example.org/path ",
                         "name": "url",
                         "in": "header"
                     },
                     {
                         "type": "string",
-                        "description": "Body to use for a POST request.",
+                        "description": "Method to use for the backend request. Optional, defaults to 'GET'.",
+                        "name": "method",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Body to use for a POST request. Optional.",
                         "name": "body",
                         "in": "header"
                     },
                     {
                         "type": "string",
-                        "description": "JSON of headers to add to the backend request.",
+                        "description": "JSON of headers to add to the backend request. Optional.",
                         "name": "additionalHeaders",
                         "in": "header"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/http.Response"
-                        }
+                        "description": ""
+                    },
+                    "400": {
+                        "description": ""
+                    },
+                    "500": {
+                        "description": ""
                     }
                 }
             }
