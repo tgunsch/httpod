@@ -232,11 +232,28 @@ paths:
       summary: Do a POST request.
       tags:
       - HTTP Methods
-  /proxy/{target}:
+  /proxy:
     get:
       consumes:
       - application/json
       description: Requests using proxy GET should query target.
+      parameters:
+      - description: Method to use for the backend request. Defaults to 'GET'.
+        in: header
+        name: method
+        type: string
+      - description: URL to use for the backend request.
+        in: header
+        name: url
+        type: string
+      - description: Body to use for a POST request.
+        in: header
+        name: body
+        type: string
+      - description: JSON of headers to add to the backend request.
+        in: header
+        name: additionalHeaders
+        type: string
       produces:
       - application/json
       responses:

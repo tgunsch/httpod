@@ -227,7 +227,7 @@
                 }
             }
         },
-        "/proxy/{target}": {
+        "/proxy": {
             "get": {
                 "description": "Requests using proxy GET should query target.",
                 "consumes": [
@@ -240,6 +240,32 @@
                     "Proxy Methods"
                 ],
                 "summary": "Do a GET request.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Method to use for the backend request. Defaults to 'GET'.",
+                        "name": "method",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "URL to use for the backend request.",
+                        "name": "url",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Body to use for a POST request.",
+                        "name": "body",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "JSON of headers to add to the backend request.",
+                        "name": "additionalHeaders",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
