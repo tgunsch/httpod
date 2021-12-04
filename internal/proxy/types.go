@@ -15,6 +15,6 @@ type BackendRequest struct {
 type BackendResponse struct {
 	StatusCode int
 	URI        string
-	Headers    *http.Header
+	Headers    http.Header
 	Body       string
 }

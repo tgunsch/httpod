@@ -50,9 +50,6 @@ var (
 func (br *BackendRequest) configureBackendRequest(req *http.Request) error {
 	var err error
 	br.Method = strings.ToUpper(req.Header.Get("method"))
-	if br.Method == "" {
-		br.Method = "GET"
-	}
 	br.URI, err = url.Parse(req.Header.Get("uri"))
 	if err != nil {
 		return err
@@ -92,24 +89,12 @@ func (br *BackendRequest) requestBackend() (*BackendResponse, error) {
 		return nil, errors.New("Error parsing body: " + err.Error())
 	}
 
-	if res.StatusCode != 0 {
-		backendResponse.StatusCode = res.StatusCode
-	}
-
 	if res.Request != nil {
-		if res.Request.RequestURI != "" {
-			backendResponse.URI = res.Request.RequestURI
-		}
+		backendResponse.URI = res.Request.RequestURI
 	}
-
-	if res.Header != nil {
-		backendResponse.Headers = &res.Header
-	}
-
-	responseBody := string(backendHttpResponseBytes)
-	if responseBody != "" {
-		backendResponse.Body = responseBody
-	}
+	backendResponse.StatusCode = res.StatusCode
+	backendResponse.Headers = res.Header
+	backendResponse.Body = string(backendHttpResponseBytes)
 
 	return backendResponse, nil
 }
