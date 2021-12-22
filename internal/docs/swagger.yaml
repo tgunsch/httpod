@@ -232,6 +232,33 @@ paths:
       summary: Do a POST request.
       tags:
       - HTTP Methods
+  /proxy:
+    get:
+      consumes:
+      - application/json
+      description: Query httpod as reverse proxy to uri.
+      parameters:
+      - description: 'Full URI to use for the backend request. Mandatory. e.g. https://example.org/path '
+        in: header
+        name: uri
+        type: string
+      - description: Method to use for the backend request. Optional, defaults to
+          'GET'.
+        in: header
+        name: method
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: ""
+        "500":
+          description: ""
+      summary: Do a GET request.
+      tags:
+      - Proxy Methods
   /put:
     put:
       consumes:

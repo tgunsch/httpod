@@ -23,9 +23,9 @@ corresponding swagger GUI. It adds some features helpful for testing in kubernet
 
 ```shell
 # Download swag once:
-go get -u github.com/swaggo/swag/cmd/swag
+go install github.com/swaggo/swag/cmd/swag@latest
 # Create swagger info
-swag init -g cmd/main.go -o internal/docs 
+swag init -g cmd/main.go -o internal/docs
 
 # Run
 go run cmd/main.go

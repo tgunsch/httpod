@@ -8,6 +8,7 @@ import (
 	"github.com/tgunsch/httpod/internal/docs"
 	"github.com/tgunsch/httpod/internal/http"
 	"github.com/tgunsch/httpod/internal/jwt"
+	"github.com/tgunsch/httpod/internal/proxy"
 	"github.com/tgunsch/httpod/internal/status"
 	"github.com/tgunsch/httpod/internal/util"
 	"html"
@@ -72,6 +73,8 @@ func main() {
 
 	api.GET("/jwt", jwt.GetHandler)
 
+	api.GET("/proxy", proxy.GetHandler)
+
 	println(banner("http://localhost:" + port + basePath + SwaggerPath + "/index.html"))
 	server.Logger.Fatal(server.Start(":" + port))
 }
@@ -89,7 +92,7 @@ func swaggerMiddleware(path string) echo.MiddlewareFunc {
 
 				_, host := util.GetSchemeHost(c.Request())
 				docs.SwaggerInfo.Host = host
-				docs.SwaggerInfo.Schemes = []string{"https", "http"}
+				docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 				docs.SwaggerInfo.BasePath = util.GetPath(path, c.Request())
 			}

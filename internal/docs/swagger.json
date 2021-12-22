@@ -227,6 +227,46 @@
                 }
             }
         },
+        "/proxy": {
+            "get": {
+                "description": "Query httpod as reverse proxy to uri.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proxy Methods"
+                ],
+                "summary": "Do a GET request.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Full URI to use for the backend request. Mandatory. e.g. https://example.org/path ",
+                        "name": "uri",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Method to use for the backend request. Optional, defaults to 'GET'.",
+                        "name": "method",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": ""
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/put": {
             "put": {
                 "description": "The PUT method replaces all current representations of the target resource with the request payload.",
