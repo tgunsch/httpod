@@ -18,7 +18,7 @@ import (
 )
 
 // @title httPod
-// @version 0.0.4
+// @version 0.0.8
 // @description A simple HTTP Request & HTTPResponse Service, shamelessly stolen from httpbin.org.
 // @tag.name HTTP Methods
 // @tag.description Testing different HTTP methods
