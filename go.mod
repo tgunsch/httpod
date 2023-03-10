@@ -16,7 +16,5 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/echo-swagger v1.1.0
 	github.com/swaggo/swag v1.7.6
-	golang.org/x/net v0.0.0-20211203184738-4852103109b8 // indirect
-	golang.org/x/sys v0.1.0 // indirect
-	golang.org/x/tools v0.1.8 // indirect
+	golang.org/x/net v0.7.0 // indirect
 )
