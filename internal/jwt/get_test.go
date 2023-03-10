@@ -41,10 +41,11 @@ var _ = Describe("GetHandler", func() {
           "jti": "882f71a3-db3a-4a67-959e-6fd172aaaca0",
           "name": "John Doe",
           "sub": "1234567890"
-        }
+        },
+        "valid": false
       }`))
 	})
-	It("return a validated jwt", func() {
+	It("return a jwt with verified signature", func() {
 
 		httpmock.Activate()
 		defer httpmock.DeactivateAndReset()
@@ -77,7 +78,8 @@ var _ = Describe("GetHandler", func() {
           "iss": "skynet",
           "sub": "T-800"
         },
-        "valid": true
+        "valid": false,
+        "verifiedSignature": true
       }`))
 	})
 
