@@ -88,7 +88,7 @@ info:
   description: A simple HTTP Request & HTTPResponse Service, shamelessly stolen from
     httpbin.org.
   title: httPod
-  version: 0.0.4
+  version: 0.0.8
 paths:
   /cookies:
     get:

@@ -4,7 +4,7 @@
         "description": "A simple HTTP Request \u0026 HTTPResponse Service, shamelessly stolen from httpbin.org.",
         "title": "httPod",
         "contact": {},
-        "version": "0.0.4"
+        "version": "0.0.8"
     },
     "paths": {
         "/cookies": {
