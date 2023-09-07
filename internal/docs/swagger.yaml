@@ -187,6 +187,11 @@ paths:
       - application/json
       description: Requests using GET should only retrieve data.
       parameters:
+      - description: if set, JWT is read from this header name. Otherwise from Authorization
+          header
+        in: query
+        name: headerName
+        type: string
       - description: if set, the jwt is verified with the key received from jwks endpoint
         in: query
         name: jwksUri
@@ -200,7 +205,8 @@ paths:
             items:
               $ref: '#/definitions/jwt.Response'
             type: array
-      summary: Get jwt passed as authorization bearer token of the request.
+      summary: Get jwt passed as header. By default from Authorization bearer header
+        of the request.
       tags:
       - JWT
   /patch:

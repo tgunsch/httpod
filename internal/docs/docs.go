@@ -167,8 +167,14 @@ const docTemplate = `{
                 "tags": [
                     "JWT"
                 ],
-                "summary": "Get jwt passed as authorization bearer token of the request.",
+                "summary": "Get jwt passed as header. By default from Authorization bearer header of the request.",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "if set, JWT is read from this header name. Otherwise from Authorization header",
+                        "name": "headerName",
+                        "in": "query"
+                    },
                     {
                         "type": "string",
                         "description": "if set, the jwt is verified with the key received from jwks endpoint",
