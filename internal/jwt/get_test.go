@@ -17,9 +17,78 @@ import (
 )
 
 var _ = Describe("GetHandler", func() {
-	It("return a jwt", func() {
+	It("return a jwt for Authorization Bearer token", func() {
 
-		ctx, _, responseRecorder := mockGetContext("http://myapp.com/api/jwt", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijg4MmY3MWEzLWRiM2EtNGE2Ny05NTllLTZmZDE3MmFhYWNhMCIsImlhdCI6MTYxOTM0NjE2MywiZXhwIjoxNjE5MzQ5NzYzfQ.3GRfe59wu2KuXJyZV0uGqxpX6WWdeQTEsARbwow_ZG4")
+		token := "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijg4MmY3MWEzLWRiM2EtNGE2Ny05NTllLTZmZDE3MmFhYWNhMCIsImlhdCI6MTYxOTM0NjE2MywiZXhwIjoxNjE5MzQ5NzYzfQ.3GRfe59wu2KuXJyZV0uGqxpX6WWdeQTEsARbwow_ZG4"
+		ctx, req, responseRecorder := mockGetContext("http://myapp.com/api/jwt")
+		req.Header.Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %s", token))
+		err := jwt.GetHandler(ctx)
+		Expect(err).Should(BeNil())
+
+		// return 200
+		Expect(responseRecorder.Code).Should(Equal(200))
+
+		// response body contains json cookie
+		Expect(responseRecorder.Body.String()).To(MatchJSON(`{
+        "raw": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijg4MmY3MWEzLWRiM2EtNGE2Ny05NTllLTZmZDE3MmFhYWNhMCIsImlhdCI6MTYxOTM0NjE2MywiZXhwIjoxNjE5MzQ5NzYzfQ.3GRfe59wu2KuXJyZV0uGqxpX6WWdeQTEsARbwow_ZG4",
+        "header": {
+          "alg": "HS256",
+          "typ": "JWT"
+        },
+        "payload": {
+          "admin": true,
+          "exp": "2021-04-25T11:22:43Z",
+          "iat": "2021-04-25T10:22:43Z",
+          "jti": "882f71a3-db3a-4a67-959e-6fd172aaaca0",
+          "name": "John Doe",
+          "sub": "1234567890"
+        },
+        "valid": false
+      }`))
+	})
+	It("return a jwt with verified signature for Authorization Bearer token", func() {
+
+		httpmock.Activate()
+		defer httpmock.DeactivateAndReset()
+
+		key := createSymmetricKey("your-256-bit-secret", "12345")
+
+		token := createToken(key)
+
+		mockJWKSEndpoint(key, "http://my.jwks.com/jwks")
+
+		ctx, req, responseRecorder := mockGetContext("http://myapp.com/api/jwt?jwksUri=http%3A%2F%2Fmy.jwks.com%2Fjwks")
+		req.Header.Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %s", token))
+
+		err := jwt.GetHandler(ctx)
+		Expect(err).Should(BeNil())
+
+		// return 200
+		Expect(responseRecorder.Code).Should(Equal(200))
+
+		// response body contains json cookie
+		Expect(responseRecorder.Body.String()).To(MatchJSON(`{
+        "raw": "eyJhbGciOiJIUzI1NiIsImtpZCI6IjEyMzQ1IiwidHlwIjoiSldUIn0.eyJleHAiOjg3ODQ1NDg0MCwiaWF0Ijo0NTMyNzkxMjAsImlzcyI6InNreW5ldCIsInN1YiI6IlQtODAwIn0.GWYi_xOOQG3xzH6zhRFbomaIZ4xra6Accn0FhaZ_87A",
+        "header": {
+          "alg": "HS256",
+          "kid": "12345",
+          "typ": "JWT"
+        },
+        "payload": {
+          "exp": "1997-11-02T07:14:00Z",
+          "iat": "1984-05-13T06:52:00Z",
+          "iss": "skynet",
+          "sub": "T-800"
+        },
+        "valid": false,
+        "verifiedSignature": true
+      }`))
+	})
+	It("return a jwt for other header", func() {
+
+		token := "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6Ijg4MmY3MWEzLWRiM2EtNGE2Ny05NTllLTZmZDE3MmFhYWNhMCIsImlhdCI6MTYxOTM0NjE2MywiZXhwIjoxNjE5MzQ5NzYzfQ.3GRfe59wu2KuXJyZV0uGqxpX6WWdeQTEsARbwow_ZG4"
+		ctx, req, responseRecorder := mockGetContext("http://myapp.com/api/jwt?headerName=X-Amzn-Oidc-Data")
+		req.Header.Set("X-Amzn-Oidc-Data", token)
 
 		err := jwt.GetHandler(ctx)
 		Expect(err).Should(BeNil())
@@ -45,42 +114,31 @@ var _ = Describe("GetHandler", func() {
         "valid": false
       }`))
 	})
-	It("return a jwt with verified signature", func() {
+	It("return error without header", func() {
 
-		httpmock.Activate()
-		defer httpmock.DeactivateAndReset()
-
-		key := createSymmetricKey("your-256-bit-secret", "12345")
-
-		token := createToken(key)
-
-		mockJWKSEndpoint(key, "http://my.jwks.com/jwks")
-
-		ctx, _, responseRecorder := mockGetContext("http://myapp.com/api/jwt?jwksUri=http%3A%2F%2Fmy.jwks.com%2Fjwks", token)
+		ctx, _, responseRecorder := mockGetContext("http://myapp.com/api/jwt")
 
 		err := jwt.GetHandler(ctx)
 		Expect(err).Should(BeNil())
 
 		// return 200
-		Expect(responseRecorder.Code).Should(Equal(200))
+		Expect(responseRecorder.Code).Should(Equal(400))
 
 		// response body contains json cookie
-		Expect(responseRecorder.Body.String()).To(MatchJSON(`{
-        "raw": "eyJhbGciOiJIUzI1NiIsImtpZCI6IjEyMzQ1IiwidHlwIjoiSldUIn0.eyJleHAiOjg3ODQ1NDg0MCwiaWF0Ijo0NTMyNzkxMjAsImlzcyI6InNreW5ldCIsInN1YiI6IlQtODAwIn0.GWYi_xOOQG3xzH6zhRFbomaIZ4xra6Accn0FhaZ_87A",
-        "header": {
-          "alg": "HS256",
-          "kid": "12345",
-          "typ": "JWT"
-        },
-        "payload": {
-          "exp": "1997-11-02T07:14:00Z",
-          "iat": "1984-05-13T06:52:00Z",
-          "iss": "skynet",
-          "sub": "T-800"
-        },
-        "valid": false,
-        "verifiedSignature": true
-      }`))
+		Expect(responseRecorder.Body.String()).To(Equal("No Authorization header in request"))
+	})
+	It("return error for invalid header", func() {
+
+		ctx, req, responseRecorder := mockGetContext("http://myapp.com/api/jwt")
+		req.Header.Set(echo.HeaderAuthorization, "Bearer NOJWT")
+		err := jwt.GetHandler(ctx)
+		Expect(err).Should(BeNil())
+
+		// return 200
+		Expect(responseRecorder.Code).Should(Equal(400))
+
+		// response body contains json cookie
+		Expect(responseRecorder.Body.String()).To(ContainSubstring("failed to parse payload: failed to parse payload: invalid JWT"))
 	})
 
 })
@@ -107,11 +165,10 @@ func createToken(key jwk.Key) string {
 	return string(signedToken)
 }
 
-func mockGetContext(uri string, token string) (echo.Context, *http.Request, *httptest.ResponseRecorder) {
+func mockGetContext(uri string) (echo.Context, *http.Request, *httptest.ResponseRecorder) {
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, uri, nil)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %s", token))
 	res := httptest.NewRecorder()
 	c := e.NewContext(req, res)
 	return c, req, res
