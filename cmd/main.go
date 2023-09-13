@@ -18,7 +18,7 @@ import (
 )
 
 // @title httPod
-// @version 0.0.8
+// @version 1.0.0
 // @description A simple HTTP Request & HTTPResponse Service, shamelessly stolen from httpbin.org.
 // @tag.name HTTP Methods
 // @tag.description Testing different HTTP methods
@@ -90,9 +90,14 @@ func swaggerMiddleware(path string) echo.MiddlewareFunc {
 		return func(c echo.Context) error {
 			if strings.HasSuffix(c.Request().URL.Path, "index.html") {
 
-				_, host := util.GetSchemeHost(c.Request())
+				scheme, host := util.GetSchemeHost(c.Request())
 				docs.SwaggerInfo.Host = host
-				docs.SwaggerInfo.Schemes = []string{"http", "https"}
+				switch scheme {
+				case "https", "HTTPS":
+					docs.SwaggerInfo.Schemes = []string{"https", "http"}
+				default:
+					docs.SwaggerInfo.Schemes = []string{"http", "https"}
+				}
 
 				docs.SwaggerInfo.BasePath = util.GetPath(path, c.Request())
 			}
